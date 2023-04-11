@@ -6,6 +6,8 @@ import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
 import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
+import '../modules/sales_summary/bindings/sales_summary_binding.dart';
+import '../modules/sales_summary/views/sales_summary_view.dart';
 import '../modules/transactions/bindings/transactions_binding.dart';
 import '../modules/transactions/views/transactions_view.dart';
 
@@ -40,6 +42,12 @@ class AppPages {
       page: () => const TransactionsView(),
       binding: TransactionsBinding(),
       transition: Transition.noTransition,
+    ),
+    GetPage(
+      name: _Paths.SALES_SUMMARY,
+      page: () => const SalesSummaryView(),
+      transition: Transition.noTransition,
+      binding: SalesSummaryBinding(),
     ),
   ];
 }

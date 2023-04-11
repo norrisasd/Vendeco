@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
 
+import '../../../../shared/responsive.dart';
 import '../controllers/login_controller.dart';
 import '../widgets/login_form.dart';
 import '../widgets/side_image.dart';
@@ -14,9 +15,10 @@ class LoginView extends GetView<LoginController> {
       extendBody: true,
       body: SafeArea(
         child: Row(
-          children: const [
-            LoginForm(),
-            SideImage(),
+          children: [
+            Expanded(child: LoginForm()),
+            if (!Responsive.isMobile(context))
+              Expanded(child: const SideImage()),
           ],
         ),
       ),

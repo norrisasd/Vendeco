@@ -1,15 +1,20 @@
+// ignore_for_file: library_private_types_in_public_api
+
+import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vendeco/shared/constants.dart';
 
 class NavigationItem extends StatefulWidget {
   const NavigationItem({
     super.key,
     required this.title,
-    required this.icon,
+    required this.svgSrc,
   });
   final String title;
-  final IconData icon;
+  final String svgSrc;
 
   @override
   _HoverNavigationItemState createState() => _HoverNavigationItemState();
@@ -22,7 +27,9 @@ class _HoverNavigationItemState extends State<NavigationItem> {
   Widget build(BuildContext context) {
     String currentRoute =
         Get.currentRoute.substring(1, Get.currentRoute.length);
-    bool active = currentRoute.indexOf(widget.title.toLowerCase()) != -1;
+    bool active = currentRoute.contains(widget.title.toLowerCase());
+    String displayTitle = widget.title.replaceAll("-", " ");
+
     return MouseRegion(
         onEnter: (_) => setState(() => _hovering = true),
         onExit: (_) => setState(() => _hovering = false),
@@ -35,33 +42,28 @@ class _HoverNavigationItemState extends State<NavigationItem> {
                       topRight: Radius.circular(23),
                       bottomRight: Radius.circular(23)),
                   gradient: LinearGradient(
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                    colors: [
-                      const Color(0xFFC3DAC1),
-                      const Color(0xFFC9DEC7).withOpacity(0.58),
-                      const Color(0xFFC2FFBC).withOpacity(0.1)
-                    ],
+                    begin: Alignment.centerLeft,
+                    end: Alignment.centerRight,
+                    colors: selectedNavItemGradient,
                   ),
                 )
               : null,
           child: Center(
             child: ListTile(
+              hoverColor: active ? Colors.transparent : null,
               contentPadding: const EdgeInsets.only(left: 51),
-              leading: Icon(
-                widget.icon,
-                size: 30,
-                color: _hovering && !active
-                    ? Colors.greenAccent
-                    : const Color(0xFF002E2C),
+              leading: SvgPicture.asset(
+                widget.svgSrc,
+                height: 30,
+                color: _hovering && !active ? Colors.greenAccent : navItemColor,
               ),
-              title: Text(
-                widget.title,
+              title: AutoSizeText(
+                displayTitle,
                 style: GoogleFonts.akshar(
                     fontSize: 25,
                     color: _hovering && !active
                         ? Colors.greenAccent
-                        : const Color(0xFF002E2C),
+                        : navItemColor,
                     letterSpacing: 2.5,
                     fontWeight: FontWeight.w400),
               ),
