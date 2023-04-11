@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vendeco/app/modules/sales_summary/models/sales.dart';
 import 'package:vendeco/shared/constants.dart';
+import 'package:vendeco/shared/widgets/mobile_header.dart';
 
 import '../../../../shared/responsive.dart';
 import '../../transactions/controllers/DropDown_controller.dart';
@@ -21,36 +22,39 @@ class SalesSummaryContent extends StatelessWidget {
       height: double.infinity,
       decoration: const BoxDecoration(color: primaryColor),
       child: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 50),
+        padding: EdgeInsets.symmetric(
+          horizontal: !Responsive.isMobile(context) ? 50 : 30,
+          vertical: !Responsive.isMobile(context) ? 50 : 30,
+        ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            const SizedBox(height: 50),
+            SizedBox(height: Responsive.isDesktop(context) ? 50 : null),
             if (!Responsive.isDesktop(context))
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                    color: secondaryColor,
-                  ),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 22),
+                child: MobileHeader(
+                  color: secondaryColor,
                 ),
               ),
             AutoSizeText(
               "Sales of the Month of",
               style: GoogleFonts.akshar(
-                fontSize: 35,
+                fontSize: !Responsive.isMobile(context) ? 35 : 22,
                 color: secondaryColor,
                 fontWeight: fwSemiBold,
-                letterSpacing: 3.5,
+                letterSpacing: !Responsive.isMobile(context) ? 3.5 : 2.2,
               ),
             ),
-            SizedBox(height: _size.height * 0.021),
+            SizedBox(
+              height: !Responsive.isMobile(context)
+                  ? _size.height * 0.021
+                  : _size.height * 0.011,
+            ),
             Container(
-              height: 50,
-              width: 350,
+              height: !Responsive.isMobile(context) ? 50 : 25,
+              width: !Responsive.isMobile(context) ? 350 : 151,
               decoration: const BoxDecoration(
                 color: Color(0xFFD0D0D0),
                 borderRadius: BorderRadius.all(Radius.circular(27)),
@@ -61,9 +65,10 @@ class SalesSummaryContent extends StatelessWidget {
                     child: AutoSizeText(
                       "${context.watch<DropDownController>().currentMonthForSales} 2023",
                       style: GoogleFonts.akshar(
-                        fontSize: 27,
+                        fontSize: !Responsive.isMobile(context) ? 27 : 15,
                         color: primaryColor,
-                        letterSpacing: 2.7,
+                        letterSpacing:
+                            !Responsive.isMobile(context) ? 2.7 : 1.5,
                         fontWeight: fwSemiBold,
                       ),
                     ),
@@ -76,7 +81,7 @@ class SalesSummaryContent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(27),
                       ),
                       height: double.infinity,
-                      width: 64,
+                      width: !Responsive.isMobile(context) ? 64 : 30,
                     ),
                   ),
                   Align(
@@ -89,18 +94,30 @@ class SalesSummaryContent extends StatelessWidget {
                 ],
               ),
             ),
-            SizedBox(height: _size.height * 0.056),
+            SizedBox(
+              height: Responsive.isMobile(context)
+                  ? _size.height * 0.023
+                  : _size.height * 0.056,
+            ),
             Wrap(
               crossAxisAlignment: WrapCrossAlignment.center,
               children: List.generate(demoSales.length,
                   (index) => SalesBox(sales: demoSales[index])),
             ),
             // SalesBoxGridView(),
-            SizedBox(height: _size.height * 0.050),
+            SizedBox(
+              height: Responsive.isMobile(context)
+                  ? _size.height * 0.020
+                  : _size.height * 0.050,
+            ),
             TotalIncomeBox(
               sales: Sales(title: "Total Income", total: "P0.00"),
             ),
-            const SizedBox(height: 50),
+            SizedBox(
+              height: Responsive.isMobile(context)
+                  ? _size.height * 0.020
+                  : _size.height * 0.050,
+            ),
           ],
         ),
       ),

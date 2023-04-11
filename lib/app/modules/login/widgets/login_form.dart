@@ -92,28 +92,29 @@ class InputGroup extends StatelessWidget {
         ),
         const SizedBox(height: 5),
         Container(
-            constraints: const BoxConstraints(
-                minHeight: 50, maxHeight: 60, minWidth: 250, maxWidth: 400),
-            width: double.infinity,
-            height: 52,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(24),
-              color: Colors.white,
-              border: Border.all(color: Colors.black87),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(left: 10.0),
-              child: TextField(
-                cursorColor: Colors.black12,
-                obscureText: (title == "Password") ? true : false,
-                decoration: const InputDecoration(
-                  counterText: "",
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.all(3),
-                ),
-                maxLength: 20,
+          constraints: const BoxConstraints(
+              minHeight: 50, maxHeight: 60, minWidth: 250, maxWidth: 400),
+          width: double.infinity,
+          height: 52,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(24),
+            color: Colors.white,
+            border: Border.all(color: Colors.black87),
+          ),
+          child: Padding(
+            padding: const EdgeInsets.only(left: 10.0),
+            child: TextField(
+              cursorColor: Colors.black12,
+              obscureText: (title == "Password") ? true : false,
+              decoration: const InputDecoration(
+                counterText: "",
+                border: InputBorder.none,
+                contentPadding: EdgeInsets.all(3),
               ),
-            )),
+              maxLength: 20,
+            ),
+          ),
+        ),
       ],
     );
   }

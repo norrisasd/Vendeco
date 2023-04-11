@@ -4,14 +4,12 @@ import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:vendeco/app/modules/transactions/controllers/DropDown_controller.dart';
-import 'package:vendeco/app/modules/transactions/models/months.dart';
 import 'package:vendeco/shared/constants.dart';
 
 import '../../../../shared/responsive.dart';
-import '../../dashboard/controllers/MenuAppController.dart';
+import '../../../../shared/widgets/mobile_header.dart';
 import 'components/dropdown_months.dart';
 import 'components/transaction_table.dart';
 
@@ -24,35 +22,32 @@ class TransactionsContent extends StatelessWidget {
         decoration: const BoxDecoration(
           color: secondaryColor,
         ),
-        padding: const EdgeInsets.symmetric(vertical: 50, horizontal: 117),
+        padding: EdgeInsets.symmetric(
+          vertical: !Responsive.isMobile(context) ? 50 : 30,
+          horizontal: !Responsive.isMobile(context) ? 117 : 30,
+        ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             if (!Responsive.isDesktop(context))
-              Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
-                    color: primaryColor,
-                  ),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
-                ),
+              const Padding(
+                padding: EdgeInsets.only(bottom: 22),
+                child: MobileHeader(color: primaryColor),
               ),
             AutoSizeText(
               "Transactions of the Month of",
               style: GoogleFonts.akshar(
-                fontSize: 40,
+                fontSize: !Responsive.isMobile(context) ? 40 : 22,
                 color: primaryColor,
                 fontWeight: fwSemiBold,
-                letterSpacing: 4.0,
+                letterSpacing: !Responsive.isMobile(context) ? 4.0 : 2.2,
               ),
             ),
             const SizedBox(height: 21),
             Container(
-              height: 50,
-              width: 350,
+              height: !Responsive.isMobile(context) ? 50 : 25,
+              width: !Responsive.isMobile(context) ? 350 : 151,
               decoration: const BoxDecoration(
                 color: Color(0xFFD0D0D0),
                 borderRadius: BorderRadius.all(Radius.circular(27)),
@@ -63,9 +58,10 @@ class TransactionsContent extends StatelessWidget {
                     child: AutoSizeText(
                       "${context.watch<DropDownController>().currentMonthForTransactions} 2023",
                       style: GoogleFonts.akshar(
-                        fontSize: 27,
+                        fontSize: !Responsive.isMobile(context) ? 27 : 15,
                         color: primaryColor,
-                        letterSpacing: 2.7,
+                        letterSpacing:
+                            !Responsive.isMobile(context) ? 2.7 : 1.5,
                         fontWeight: fwSemiBold,
                       ),
                     ),
@@ -78,7 +74,7 @@ class TransactionsContent extends StatelessWidget {
                         borderRadius: BorderRadius.circular(27),
                       ),
                       height: double.infinity,
-                      width: 64,
+                      width: !Responsive.isMobile(context) ? 64 : 30,
                     ),
                   ),
                   Align(
@@ -100,9 +96,9 @@ class TransactionsContent extends StatelessWidget {
                   AutoSizeText(
                     "Save As",
                     style: GoogleFonts.akshar(
-                      fontSize: 27,
+                      fontSize: !Responsive.isMobile(context) ? 27 : 15,
                       color: primaryColor,
-                      letterSpacing: 2.7,
+                      letterSpacing: !Responsive.isMobile(context) ? 2.7 : 1.5,
                       fontWeight: fwLight,
                     ),
                   ),
@@ -110,7 +106,7 @@ class TransactionsContent extends StatelessWidget {
                   SvgPicture.asset(
                     "assets/icons/save_as.svg",
                     color: primaryColor,
-                    height: 35,
+                    height: !Responsive.isMobile(context) ? 35 : 22,
                   )
                 ],
               ),

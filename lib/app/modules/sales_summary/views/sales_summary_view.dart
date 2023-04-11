@@ -22,6 +22,10 @@ class SalesSummaryView extends GetView<SalesSummaryController> {
           mainAxisAlignment: MainAxisAlignment.start,
           // ignore: prefer_const_literals_to_create_immutables
           children: [
+            // if (Responsive.isMobile(context))
+            //   const Expanded(
+            //     child: SalesSummaryContentMobile(),
+            //   ),
             if (Responsive.isDesktop(context))
               const Expanded(
                 child: Navigation(),

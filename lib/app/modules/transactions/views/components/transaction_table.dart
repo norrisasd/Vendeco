@@ -32,7 +32,7 @@ class TransactionTable extends StatelessWidget {
               }),
             ),
             child: DataTable2(
-              border: TableBorder.all(width: 1, color: Color(0xFFA8A1A1)),
+              border: TableBorder.all(width: 1, color: const Color(0xFFA8A1A1)),
               minWidth: 600,
               columns: [
                 DataColumn(
