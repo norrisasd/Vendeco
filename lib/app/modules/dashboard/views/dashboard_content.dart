@@ -2,12 +2,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:vendeco/shared/constants.dart';
 
 import '../../../../shared/responsive.dart';
-import '../controllers/MenuAppController.dart';
-import 'components/available_table.dart';
+import 'components/available_items.dart';
 import 'components/hardware_info.dart';
 import 'components/header.dart';
 
@@ -16,36 +14,41 @@ class DashboardContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Expanded(
-      flex: 3,
-      child: Container(
-        decoration: const BoxDecoration(
-          color: primaryColor,
-        ),
-        padding: EdgeInsets.all(50),
+    return Container(
+      height: double.infinity,
+      decoration: const BoxDecoration(
+        color: primaryColor,
+      ),
+      child: SingleChildScrollView(
+        padding: EdgeInsets.symmetric(
+            horizontal: Responsive.isMobile(context) ? 30 : 50,
+            vertical: Responsive.isMobile(context) ? 30 : 50),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             //TOP
+            DashboardHeader(),
+            if (Responsive.isMobile(context))
+              SizedBox(height: Responsive.isMobile(context) ? 31 : 43),
             if (!Responsive.isDesktop(context))
               Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: const Icon(
-                    Icons.menu,
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  "Hello!\nWelcome back!",
+                  textAlign: TextAlign.left,
+                  style: GoogleFonts.akshar(
+                    fontSize: Responsive.isMobile(context) ? 23 : 45,
+                    fontWeight: fwSemiBold,
                     color: secondaryColor,
+                    letterSpacing: Responsive.isMobile(context) ? 2.3 : 4.5,
                   ),
-                  onPressed: () => Scaffold.of(context).openDrawer(),
                 ),
               ),
-            DashboardHeader(),
             //MID
-            const SizedBox(height: 43),
+            SizedBox(height: Responsive.isMobile(context) ? 31 : 43),
             HardwareInfo(),
-            const SizedBox(height: 49),
-            Expanded(
-              child: AvailableTable(),
-            )
+            SizedBox(height: Responsive.isMobile(context) ? 40 : 49),
+            AvailableItems()
           ],
         ),
       ),

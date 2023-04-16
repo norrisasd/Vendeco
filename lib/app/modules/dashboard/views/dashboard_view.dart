@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
 
 import 'package:get/get.dart';
-import 'package:provider/provider.dart';
 
 import '../../../../shared/navigation.dart';
 import '../../../../shared/responsive.dart';
-import '../controllers/MenuAppController.dart';
 import '../controllers/dashboard_controller.dart';
 import 'dashboard_content.dart';
 
@@ -26,7 +24,7 @@ class DashboardView extends GetView<DashboardController> {
               const Expanded(
                 child: Navigation(),
               ),
-            const DashboardContent(),
+            const Expanded(flex: 3, child: DashboardContent()),
           ],
         ),
       ),

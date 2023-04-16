@@ -11,6 +11,7 @@ const Color primaryColor = Color(0xFF335C3F);
 const Color secondaryColor = Color(0xFFF5F6F0);
 const Color tertiaryColor = Color(0xFFC8C4C4);
 const Color navItemColor = Color(0xFF002E2C);
+
 List<Color> selectedNavItemGradient = [
   const Color(0xFFC3DAC1),
   const Color(0xFFC9DEC7).withOpacity(0.58),

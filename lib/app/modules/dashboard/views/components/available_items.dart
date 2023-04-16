@@ -1,37 +1,22 @@
-class AvailableItems {
-  String? item, product_name, price, dispense_time, quality_left;
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-  AvailableItems(
-      {this.item,
-      this.product_name,
-      this.price,
-      this.dispense_time,
-      this.quality_left});
+import 'package:flutter/material.dart';
+import '../../../../../shared/responsive.dart';
+import 'item_box.dart';
+
+class AvailableItems extends StatelessWidget {
+  const AvailableItems({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+        spacing: Responsive.isMobile(context) ? 30 : 49,
+        runSpacing: Responsive.isMobile(context) ? 39 : 49,
+        children: [
+          ItemBox(),
+          ItemBox(),
+          ItemBox(),
+          ItemBox(),
+        ]);
+  }
 }
-
-List<AvailableItems> demoAvailableItems = [
-  AvailableItems(
-      item: "1",
-      product_name: "Shampoo",
-      price: "\$10/XML",
-      dispense_time: "30 sec",
-      quality_left: "5"),
-  AvailableItems(
-      item: "4",
-      product_name: "Shampoo",
-      price: "\$10/XML",
-      dispense_time: "30 sec",
-      quality_left: "5"),
-  AvailableItems(
-      item: "5",
-      product_name: "Shampoo",
-      price: "\$10/XML",
-      dispense_time: "30 sec",
-      quality_left: "5"),
-  AvailableItems(
-      item: "6",
-      product_name: "Shampoo",
-      price: "\$10/XML",
-      dispense_time: "30 sec",
-      quality_left: "5"),
-];
