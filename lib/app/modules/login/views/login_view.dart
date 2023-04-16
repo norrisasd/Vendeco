@@ -16,9 +16,9 @@ class LoginView extends GetView<LoginController> {
       body: SafeArea(
         child: Row(
           children: [
-            Expanded(child: LoginForm()),
+            const Expanded(child: LoginForm()),
             if (!Responsive.isMobile(context))
-              Expanded(child: const SideImage()),
+              const Expanded(child: SideImage()),
           ],
         ),
       ),

@@ -59,7 +59,9 @@ class LoginForm extends StatelessWidget {
               },
               style: ButtonStyle(
                 backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
-                minimumSize: MaterialStateProperty.all<Size>(Size(200, 50)),
+                minimumSize: MaterialStateProperty.all<Size>(Size(
+                    Responsive.isMobile(context) ? 120 : 200,
+                    Responsive.isMobile(context) ? 35 : 50)),
                 shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                   RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(44),
@@ -68,7 +70,9 @@ class LoginForm extends StatelessWidget {
               ),
               child: AutoSizeText(
                 'Login',
-                style: GoogleFonts.akshar(fontSize: 41, color: Colors.white),
+                style: GoogleFonts.akshar(
+                    fontSize: Responsive.isMobile(context) ? 25 : 41,
+                    color: Colors.white),
               ),
             ),
           ],
@@ -82,40 +86,42 @@ class InputGroup extends StatelessWidget {
   final String input;
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.start,
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        AutoSizeText(
-          title,
-          style: GoogleFonts.akshar(fontSize: 19),
-        ),
-        const SizedBox(height: 5),
-        Container(
-          constraints: const BoxConstraints(
-              minHeight: 50, maxHeight: 60, minWidth: 250, maxWidth: 400),
-          width: double.infinity,
-          height: 52,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(24),
-            color: Colors.white,
-            border: Border.all(color: Colors.black87),
+    return Container(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          AutoSizeText(
+            title,
+            style: GoogleFonts.akshar(fontSize: 19),
           ),
-          child: Padding(
-            padding: const EdgeInsets.only(left: 10.0),
-            child: TextField(
-              cursorColor: Colors.black12,
-              obscureText: (title == "Password") ? true : false,
-              decoration: const InputDecoration(
-                counterText: "",
-                border: InputBorder.none,
-                contentPadding: EdgeInsets.all(3),
+          const SizedBox(height: 5),
+          Container(
+            constraints: const BoxConstraints(
+                minHeight: 50, maxHeight: 60, minWidth: 250, maxWidth: 400),
+            width: Responsive.isMobile(context) ? 250 : 400,
+            height: 52,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(24),
+              color: Colors.white,
+              border: Border.all(color: Colors.black87),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.only(left: 10.0),
+              child: TextField(
+                cursorColor: Colors.black12,
+                obscureText: (title == "Password") ? true : false,
+                decoration: const InputDecoration(
+                  counterText: "",
+                  border: InputBorder.none,
+                  contentPadding: EdgeInsets.all(3),
+                ),
+                maxLength: 20,
               ),
-              maxLength: 20,
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }
