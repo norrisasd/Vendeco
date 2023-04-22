@@ -13,70 +13,76 @@ class LoginForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        padding: const EdgeInsets.symmetric(vertical: 100),
-        decoration: BoxDecoration(
-          color: Colors.white,
-          image: Responsive.isMobile(context)
-              ? const DecorationImage(
-                  image: AssetImage("assets/login/side_image.png"),
-                  fit: BoxFit.fill)
-              : null,
-        ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Container(
-              height: 230,
-              width: 230,
-              // ignore: prefer_const_constructors
-              decoration: BoxDecoration(
-                  image: const DecorationImage(
-                      image: AssetImage("assets/login/logo.png"),
-                      fit: BoxFit.fitHeight)),
-            ),
-            const SizedBox(height: 36),
-            AutoSizeText(
-              "Welcome to Vendeco!",
-              style: GoogleFonts.akshar(fontSize: 41),
-            ),
-            SizedBox(height: 47),
-            const InputGroup(
-              title: "Component ID",
-              input: " ",
-            ),
-            SizedBox(height: 27),
-            const InputGroup(
-              title: "Password",
-              input: " ",
-            ),
-            SizedBox(height: 44),
-            TextButton(
-              onPressed: () {
-                // Add your button press logic here
-                Get.toNamed("/dashboard");
-              },
-              style: ButtonStyle(
-                backgroundColor: MaterialStateProperty.all<Color>(primaryColor),
-                minimumSize: MaterialStateProperty.all<Size>(Size(
-                    Responsive.isMobile(context) ? 120 : 200,
-                    Responsive.isMobile(context) ? 35 : 50)),
-                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                  RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(44),
+    double height = MediaQuery.of(context).size.height;
+    return SingleChildScrollView(
+      child: Container(
+          height: height,
+          padding: EdgeInsets.symmetric(vertical: height * 0.1),
+          decoration: BoxDecoration(
+            color: Colors.white,
+            image: Responsive.isMobile(context)
+                ? const DecorationImage(
+                    image: AssetImage("assets/login/side_image.png"),
+                    fit: BoxFit.fill)
+                : null,
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Container(
+                height: 230,
+                width: 230,
+                // ignore: prefer_const_constructors
+                decoration: BoxDecoration(
+                    image: const DecorationImage(
+                        image: AssetImage("assets/login/logo.png"),
+                        fit: BoxFit.fitHeight)),
+              ),
+              SizedBox(height: height * 0.036),
+              AutoSizeText(
+                "Welcome to Vendeco!",
+                style: GoogleFonts.akshar(
+                    fontSize: Responsive.isMobile(context) ? 29 : 41),
+              ),
+              SizedBox(height: height * 0.047),
+              const InputGroup(
+                title: "Component ID",
+                input: " ",
+              ),
+              SizedBox(height: height * 0.027),
+              const InputGroup(
+                title: "Password",
+                input: " ",
+              ),
+              SizedBox(height: height * 0.044),
+              TextButton(
+                onPressed: () {
+                  // Add your button press logic here
+                  Get.toNamed("/dashboard");
+                },
+                style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(primaryColor),
+                  minimumSize: MaterialStateProperty.all<Size>(Size(
+                      Responsive.isMobile(context) ? 120 : 200,
+                      Responsive.isMobile(context) ? 35 : 50)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(44),
+                    ),
                   ),
                 ),
+                child: AutoSizeText(
+                  'Login',
+                  style: GoogleFonts.akshar(
+                      fontSize: Responsive.isMobile(context) ? 25 : 41,
+                      color: Colors.white),
+                ),
               ),
-              child: AutoSizeText(
-                'Login',
-                style: GoogleFonts.akshar(
-                    fontSize: Responsive.isMobile(context) ? 25 : 41,
-                    color: Colors.white),
-              ),
-            ),
-          ],
-        ));
+            ],
+          )),
+    );
   }
 }
 
@@ -93,7 +99,8 @@ class InputGroup extends StatelessWidget {
         children: [
           AutoSizeText(
             title,
-            style: GoogleFonts.akshar(fontSize: 19),
+            style: GoogleFonts.akshar(
+                fontSize: Responsive.isMobile(context) ? 14 : 19),
           ),
           const SizedBox(height: 5),
           Container(

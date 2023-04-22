@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../../../../../shared/constants.dart';
+import '../../../../../shared/responsive.dart';
 import '../../controllers/DropDown_controller.dart';
 import '../../models/months.dart';
 
@@ -22,7 +23,11 @@ class _DropDownMonthForTransactions
       // value: context.watch<DropDownController>().currentMonth,
       isExpanded: true,
       elevation: 16,
-      icon: const Icon(Icons.arrow_downward, color: secondaryColor),
+      icon: Icon(
+        Icons.arrow_downward,
+        size: Responsive.isMobile(context) ? 12 : 30,
+        color: primaryColor,
+      ),
       style: const TextStyle(color: primaryColor),
       underline: Container(
         color: Colors.transparent,

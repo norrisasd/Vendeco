@@ -69,17 +69,6 @@ class TransactionsContent extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(27),
-                      ),
-                      height: double.infinity,
-                      width: !Responsive.isMobile(context) ? 64 : 30,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
                       padding: const EdgeInsets.only(right: 20),
                       child: DropDownMonthForTransactions(),
                     ),

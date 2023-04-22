@@ -54,7 +54,7 @@ class SalesSummaryContent extends StatelessWidget {
             ),
             Container(
               height: !Responsive.isMobile(context) ? 50 : 25,
-              width: !Responsive.isMobile(context) ? 350 : 151,
+              width: !Responsive.isMobile(context) ? 350 : 200,
               decoration: const BoxDecoration(
                 color: Color(0xFFD0D0D0),
                 borderRadius: BorderRadius.all(Radius.circular(27)),
@@ -76,18 +76,9 @@ class SalesSummaryContent extends StatelessWidget {
                   Align(
                     alignment: Alignment.topRight,
                     child: Container(
-                      decoration: BoxDecoration(
-                        color: primaryColor,
-                        borderRadius: BorderRadius.circular(27),
+                      padding: const EdgeInsets.only(
+                        right: 20,
                       ),
-                      height: double.infinity,
-                      width: !Responsive.isMobile(context) ? 64 : 30,
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Container(
-                      padding: const EdgeInsets.only(right: 20),
                       child: const DropDownMonthForSales(),
                     ),
                   ),
