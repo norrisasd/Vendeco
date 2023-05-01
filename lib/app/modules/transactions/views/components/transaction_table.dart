@@ -53,13 +53,6 @@ class TransactionTable extends StatelessWidget {
                 DataColumn(
                   label: Center(
                       child: AutoSizeText(
-                    "Number of Order/s",
-                    style: transactionTableText,
-                  )),
-                ),
-                DataColumn(
-                  label: Center(
-                      child: AutoSizeText(
                     "Total mL",
                     style: transactionTableText,
                   )),
@@ -94,11 +87,6 @@ class TransactionTable extends StatelessWidget {
         DataCell(
           Center(
             child: AutoSizeText(item.product_name!, style: tableText),
-          ),
-        ),
-        DataCell(
-          Center(
-            child: AutoSizeText(item.number_of_order!, style: tableText),
           ),
         ),
         DataCell(
