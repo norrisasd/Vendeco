@@ -75,7 +75,7 @@ class SalesBox extends StatelessWidget {
                     ),
                   Center(
                     child: AutoSizeText(
-                      sales.total!,
+                      "P${sales.total}",
                       style: GoogleFonts.akshar(
                         fontSize: Responsive.isMobile(context) ? 40 : 59,
                         color: Colors.black,

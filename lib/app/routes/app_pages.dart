@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 
+import '../../middlewares/auth_middleware.dart';
 import '../modules/dashboard/bindings/dashboard_binding.dart';
 import '../modules/dashboard/views/dashboard_view.dart';
 import '../modules/home/bindings/home_binding.dart';
@@ -35,18 +36,27 @@ class AppPages {
       name: _Paths.DASHBOARD,
       page: () => const DashboardView(),
       binding: DashboardBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
       transition: Transition.noTransition,
     ),
     GetPage(
       name: _Paths.TRANSACTIONS,
-      page: () => const TransactionsView(),
+      page: () => TransactionsView(),
       binding: TransactionsBinding(),
+      middlewares: [
+        AuthMiddleware(),
+      ],
       transition: Transition.noTransition,
     ),
     GetPage(
       name: _Paths.SALES_SUMMARY,
-      page: () => const SalesSummaryView(),
+      page: () => SalesSummaryView(),
       transition: Transition.noTransition,
+      middlewares: [
+        AuthMiddleware(),
+      ],
       binding: SalesSummaryBinding(),
     ),
   ];

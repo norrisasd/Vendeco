@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 
 class Sales {
-  final String? title, total;
+  final String? title;
+  final double? total;
 
   Sales({this.title, this.total});
 }
 
 List demoSales = [
-  Sales(title: "Shampoo", total: "P0.00"),
-  Sales(title: "Hair Conditioner", total: "P0.00"),
-  Sales(title: "Liquid Detergent", total: "P0.00"),
-  Sales(title: "Fabric Conditioner", total: "P0.00"),
+  Sales(title: "Shampoo", total: 0.0),
+  Sales(title: "Hair Conditioner", total: 0.0),
+  Sales(title: "Fabric Conditioner", total: 0.0),
+  Sales(title: "Liquid Detergent", total: 0.0),
 ];

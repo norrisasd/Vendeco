@@ -1,6 +1,5 @@
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vendeco/shared/constants.dart';
 
@@ -13,7 +12,6 @@ class DashboardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return Row(
@@ -44,32 +42,32 @@ class DashboardHeader extends StatelessWidget {
             ),
           Row(
             children: [
-              Container(
-                height: Responsive.isMobile(context) ? 32 : 60,
-                width: Responsive.isMobile(context)
-                    ? constraints.maxWidth * 0.400
-                    : constraints.maxWidth * 0.310,
-                decoration: const BoxDecoration(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(25),
-                  ),
-                  color: secondaryColor,
-                ),
-                padding: EdgeInsets.symmetric(
-                    horizontal: Responsive.isMobile(context) ? 5 : 20.0,
-                    vertical: Responsive.isMobile(context) ? 0 : 14),
-                child: const TextField(
-                  cursorColor: Colors.black12,
-                  decoration: InputDecoration(
-                    prefixIcon: Icon(Icons.search),
-                    hintText: "Search . . .",
-                    counterText: "",
-                    border: InputBorder.none,
-                    contentPadding: EdgeInsets.all(3),
-                  ),
-                  maxLength: 20,
-                ),
-              ),
+              // Container(
+              //   height: Responsive.isMobile(context) ? 32 : 60,
+              //   width: Responsive.isMobile(context)
+              //       ? constraints.maxWidth * 0.400
+              //       : constraints.maxWidth * 0.310,
+              //   decoration: const BoxDecoration(
+              //     borderRadius: BorderRadius.all(
+              //       Radius.circular(25),
+              //     ),
+              //     color: secondaryColor,
+              //   ),
+              //   padding: EdgeInsets.symmetric(
+              //       horizontal: Responsive.isMobile(context) ? 5 : 20.0,
+              //       vertical: Responsive.isMobile(context) ? 0 : 14),
+              //   child: const TextField(
+              //     cursorColor: Colors.black12,
+              //     decoration: InputDecoration(
+              //       prefixIcon: Icon(Icons.search),
+              //       hintText: "Search . . .",
+              //       counterText: "",
+              //       border: InputBorder.none,
+              //       contentPadding: EdgeInsets.all(3),
+              //     ),
+              //     maxLength: 20,
+              //   ),
+              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 19.0),
                 child: Container(

@@ -1,7 +1,5 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
 
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -10,7 +8,8 @@ import 'package:vendeco/shared/constants.dart';
 import '../../../../../shared/responsive.dart';
 
 class ItemBox extends StatelessWidget {
-  const ItemBox({super.key});
+  final String name;
+  const ItemBox({super.key, required this.name});
 
   @override
   Widget build(BuildContext context) {
@@ -30,7 +29,7 @@ class ItemBox extends StatelessWidget {
           //ITEM NAME
           Center(
             child: Text(
-              "Fabric Conditioner",
+              name,
               textAlign: TextAlign.center,
               style: GoogleFonts.akshar(
                 color: Colors.black,
@@ -57,15 +56,7 @@ class ItemDetails extends StatelessWidget {
     return Column(
       children: [
         Text(
-          "Px/mL",
-          style: GoogleFonts.akshar(
-            fontSize: Responsive.isMobile(context) ? 16 : 26,
-            color: Colors.black,
-            letterSpacing: Responsive.isMobile(context) ? 1.6 : 2.6,
-          ),
-        ),
-        Text(
-          "xmL/ms",
+          "P5 / 12mL",
           style: GoogleFonts.akshar(
             fontSize: Responsive.isMobile(context) ? 16 : 26,
             color: Colors.black,
@@ -154,16 +145,16 @@ class ItemHeader extends StatelessWidget {
           size: Responsive.isMobile(context) ? 40 : 62,
           color: Colors.black,
         ),
-        IconButton(
-          icon: Icon(
-            Icons.edit_outlined,
-            size: Responsive.isMobile(context) ? 22 : 34,
-            color: const Color(0xFFA8A1A1),
-          ),
-          onPressed: () {
-            openDialog(1, "Fabric Conditioner");
-          },
-        )
+        // IconButton(
+        //   icon: Icon(
+        //     Icons.edit_outlined,
+        //     size: Responsive.isMobile(context) ? 22 : 34,
+        //     color: const Color(0xFFA8A1A1),
+        //   ),
+        //   onPressed: () {
+        //     openDialog(1, "Fabric Conditioner");
+        //   },
+        // )
       ],
     );
   }

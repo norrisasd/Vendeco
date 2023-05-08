@@ -2,101 +2,57 @@
 
 import 'package:flutter/material.dart';
 
-class Transaction {
-  final String? date, product_name, number_of_order, total_ml, price;
+class VendecoTransaction {
+  final String? date, product_name, input_amount, dispensed_mL, price;
 
-  Transaction(
+  VendecoTransaction(
       {this.date,
+      this.input_amount,
       this.product_name,
-      this.number_of_order,
-      this.total_ml,
+      this.dispensed_mL,
       this.price});
+
+  @override
+  String toString() {
+    return 'VendecoTransaction(date: $date, product_name: $product_name, input_amount: $input_amount, dispensed_mL: $dispensed_mL, price: $price)';
+  }
 }
 
 List demoTransactions = [
-  Transaction(
-    date: "oct 5",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 6",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 7",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 8",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 6",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 7",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 8",
-    product_name: "Shampoo",
-    number_of_order: "1",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 6",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 7",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 8",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 8",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 6",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 7",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
-  Transaction(
-    date: "oct 8",
-    product_name: "Shampoo",
-    total_ml: "100",
-    price: "\$10/XML",
-  ),
+  VendecoTransaction(
+      date: "2021-09-01",
+      product_name: "Coca-Cola",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
+  VendecoTransaction(
+      date: "2021-09-03",
+      product_name: "Sprite",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
+  VendecoTransaction(
+      date: "2021-09-05",
+      product_name: "Royal",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
+  VendecoTransaction(
+      date: "2021-09-02",
+      product_name: "RC",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
+  VendecoTransaction(
+      date: "2021-09-02",
+      product_name: "RC",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
+  VendecoTransaction(
+      date: "2021-09-02",
+      product_name: "RC",
+      input_amount: "1000",
+      dispensed_mL: "1000",
+      price: "10"),
 ];

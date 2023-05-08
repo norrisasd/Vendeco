@@ -1,17 +1,25 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+import 'dart:html';
 
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/services.dart';
+import 'dart:typed_data';
+import 'dart:html' as html;
+import 'package:pdf/pdf.dart';
+import 'package:pdf/widgets.dart' as pw;
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:vendeco/app/modules/transactions/controllers/DropDown_controller.dart';
+import 'package:vendeco/app/modules/transactions/controllers/transactions_controller.dart';
 import 'package:vendeco/shared/constants.dart';
 
 import '../../../../shared/responsive.dart';
 import '../../../../shared/widgets/mobile_header.dart';
 import 'components/dropdown_months.dart';
 import 'components/transaction_table.dart';
+import 'components/transactions.dart';
 
 class TransactionsContent extends StatelessWidget {
   const TransactionsContent({super.key});
@@ -79,25 +87,37 @@ class TransactionsContent extends StatelessWidget {
             const SizedBox(height: 5),
             Align(
               alignment: Alignment.topRight,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: [
-                  AutoSizeText(
-                    "Save As",
-                    style: GoogleFonts.akshar(
-                      fontSize: !Responsive.isMobile(context) ? 27 : 15,
-                      color: primaryColor,
-                      letterSpacing: !Responsive.isMobile(context) ? 2.7 : 1.5,
-                      fontWeight: fwLight,
+              child: TextButton(
+                onPressed: () async {
+                  var transactions = Provider.of<TransactionsController>(
+                          context,
+                          listen: false)
+                      .getTransactionList;
+                  final pdfBytes = await generatePdf(transactions);
+                  savePdf(pdfBytes, 'transactions.pdf');
+                  // exportToExcel(transactions);
+                },
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    AutoSizeText(
+                      "Save As",
+                      style: GoogleFonts.akshar(
+                        fontSize: !Responsive.isMobile(context) ? 27 : 15,
+                        color: primaryColor,
+                        letterSpacing:
+                            !Responsive.isMobile(context) ? 2.7 : 1.5,
+                        fontWeight: fwLight,
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 12),
-                  SvgPicture.asset(
-                    "assets/icons/save_as.svg",
-                    color: primaryColor,
-                    height: !Responsive.isMobile(context) ? 35 : 22,
-                  )
-                ],
+                    const SizedBox(height: 12),
+                    SvgPicture.asset(
+                      "assets/icons/save_as.svg",
+                      color: primaryColor,
+                      height: !Responsive.isMobile(context) ? 35 : 22,
+                    )
+                  ],
+                ),
               ),
             ),
             const SizedBox(height: 16),
@@ -106,5 +126,59 @@ class TransactionsContent extends StatelessWidget {
             ),
           ],
         ));
+  }
+
+  Future<Uint8List> generatePdf(List<VendecoTransaction> data) async {
+    final pdf = pw.Document();
+    final fontData = await rootBundle.load("assets/fonts/Roboto-Regular.ttf");
+    final ttf = pw.Font.ttf(fontData.buffer.asByteData());
+    final roboto =
+        pw.Font.ttf(await rootBundle.load("assets/fonts/Roboto-Regular.ttf"));
+    // create table headers
+    final headers = [
+      'Date',
+      'Product Name',
+      'Input Amount',
+      'Dispensed mL',
+      'Price'
+    ];
+
+    // create table data
+    final tableData = data.map((transaction) {
+      return [
+        '${transaction.date}',
+        '${transaction.product_name}',
+        '${transaction.input_amount}',
+        '${transaction.dispensed_mL}',
+        '${transaction.price}',
+      ];
+    }).toList();
+    // add table to pdf document
+    pdf.addPage(
+      pw.MultiPage(
+        build: (context) => [
+          pw.Table.fromTextArray(
+              headers: headers,
+              data: tableData,
+              headerStyle: pw.TextStyle(font: roboto),
+              cellStyle: pw.TextStyle(font: roboto)),
+        ],
+      ),
+    );
+
+    // save the pdf document to bytes
+    final bytes = await pdf.save();
+    return bytes;
+  }
+
+  void savePdf(Uint8List pdfBytes, String fileName) {
+    final blob = html.Blob([pdfBytes], 'application/pdf');
+    final url = html.Url.createObjectUrlFromBlob(blob);
+
+    final anchor =
+        AnchorElement(href: Url.createObjectUrlFromBlob(Blob([pdfBytes])));
+    anchor.download = '$fileName.pdf';
+    anchor.click();
+    anchor.href = '';
   }
 }

@@ -1,18 +1,39 @@
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:get/get.dart';
 
+import '../../../../auth.dart';
 import '../../../../shared/constants.dart';
 import '../../../../shared/responsive.dart';
+import '../controllers/auth_controller.dart';
 
-class LoginForm extends StatelessWidget {
+class LoginForm extends StatefulWidget {
   const LoginForm({
     super.key,
   });
 
   @override
+  State<LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<LoginForm> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
   Widget build(BuildContext context) {
+    Future login() async {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
+      await AuthController.instance
+          .login(_emailController.text, _passwordController.text, context);
+    }
+
     double height = MediaQuery.of(context).size.height;
     return SingleChildScrollView(
       child: Container(
@@ -46,20 +67,20 @@ class LoginForm extends StatelessWidget {
                     fontSize: Responsive.isMobile(context) ? 29 : 41),
               ),
               SizedBox(height: height * 0.047),
-              const InputGroup(
-                title: "Component ID",
-                input: " ",
+              InputGroup(
+                title: "Email",
+                textController: _emailController,
               ),
               SizedBox(height: height * 0.027),
-              const InputGroup(
+              InputGroup(
                 title: "Password",
-                input: " ",
+                textController: _passwordController,
               ),
               SizedBox(height: height * 0.044),
               TextButton(
                 onPressed: () {
                   // Add your button press logic here
-                  Get.toNamed("/dashboard");
+                  login();
                 },
                 style: ButtonStyle(
                   backgroundColor:
@@ -87,9 +108,10 @@ class LoginForm extends StatelessWidget {
 }
 
 class InputGroup extends StatelessWidget {
-  const InputGroup({super.key, required this.title, required this.input});
+  const InputGroup(
+      {super.key, required this.title, required this.textController});
   final String title;
-  final String input;
+  final TextEditingController textController;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -116,6 +138,7 @@ class InputGroup extends StatelessWidget {
             child: Padding(
               padding: const EdgeInsets.only(left: 10.0),
               child: TextField(
+                controller: textController,
                 cursorColor: Colors.black12,
                 obscureText: (title == "Password") ? true : false,
                 decoration: const InputDecoration(
@@ -123,7 +146,7 @@ class InputGroup extends StatelessWidget {
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.all(3),
                 ),
-                maxLength: 20,
+                maxLength: 40,
               ),
             ),
           ),

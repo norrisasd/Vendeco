@@ -23,11 +23,11 @@ class MobileHeader extends StatelessWidget {
           ),
           Row(
             children: [
-              Icon(
-                Icons.search,
-                size: 32,
-                color: color,
-              ),
+              // Icon(
+              //   Icons.search,
+              //   size: 32,
+              //   color: color,
+              // ),
               SizedBox(width: 23),
               Icon(
                 Icons.notifications_outlined,

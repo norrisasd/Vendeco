@@ -13,10 +13,12 @@ class AvailableItems extends StatelessWidget {
         spacing: Responsive.isMobile(context) ? 30 : 49,
         runSpacing: Responsive.isMobile(context) ? 39 : 49,
         children: [
-          ItemBox(),
-          ItemBox(),
-          ItemBox(),
-          ItemBox(),
+          ItemBox(
+            name: "Shampoo",
+          ),
+          ItemBox(name: "Hair Conditioner"),
+          ItemBox(name: "Liquid Detergent"),
+          ItemBox(name: "Fabric Conditioner"),
         ]);
   }
 }

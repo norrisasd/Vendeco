@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../../shared/responsive.dart';
-import '../controllers/login_controller.dart';
+import '../controllers/auth_controller.dart';
 import '../widgets/login_form.dart';
 import '../widgets/side_image.dart';
 
-class LoginView extends GetView<LoginController> {
+class LoginView extends GetView<AuthController> {
   const LoginView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
@@ -16,7 +16,7 @@ class LoginView extends GetView<LoginController> {
       body: SafeArea(
         child: Row(
           children: [
-            const Expanded(child: LoginForm()),
+            Expanded(child: LoginForm()),
             if (!Responsive.isMobile(context))
               const Expanded(child: SideImage()),
           ],

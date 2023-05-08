@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "327090325325",
+    "firebase_url": "https://vendeco-99246-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "vendeco-99246",
+    "storage_bucket": "vendeco-99246.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:327090325325:android:26678313492026ca981904",
+        "android_client_info": {
+          "package_name": "com.vendeco.vendeco"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "327090325325-pe534hggerg0gdmdqri2ur217auvv73i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoAGz3XE9UrLD3gcwLVsB7rt-kLbhWQKk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "327090325325-pe534hggerg0gdmdqri2ur217auvv73i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -43,7 +43,7 @@ class TotalIncomeBox extends StatelessWidget {
               ),
               child: Center(
                 child: AutoSizeText(
-                  sales.total!,
+                  "P${sales.total}",
                   style: GoogleFonts.akshar(
                     fontSize: 59,
                     color: Colors.black,

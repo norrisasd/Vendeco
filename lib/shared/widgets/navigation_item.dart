@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:vendeco/app/modules/login/controllers/auth_controller.dart';
 import 'package:vendeco/shared/constants.dart';
 
 class NavigationItem extends StatefulWidget {
@@ -25,6 +26,15 @@ class _HoverNavigationItemState extends State<NavigationItem> {
 
   @override
   Widget build(BuildContext context) {
+    Future logout() async {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(child: CircularProgressIndicator());
+          });
+      await AuthController.instance.logOut();
+    }
+
     String currentRoute =
         Get.currentRoute.substring(1, Get.currentRoute.length);
     bool active = currentRoute.contains(widget.title.toLowerCase());
@@ -69,6 +79,9 @@ class _HoverNavigationItemState extends State<NavigationItem> {
               ),
               onTap: () {
                 // Add your button press logic here
+                if (widget.title.toLowerCase() == "logout") {
+                  logout();
+                }
                 Get.toNamed("/${widget.title.toLowerCase()}");
               },
             ),
