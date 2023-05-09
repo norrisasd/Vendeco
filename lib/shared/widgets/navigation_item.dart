@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:vendeco/app/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:vendeco/app/modules/login/controllers/auth_controller.dart';
 import 'package:vendeco/shared/constants.dart';
 
@@ -80,6 +82,8 @@ class _HoverNavigationItemState extends State<NavigationItem> {
               onTap: () {
                 // Add your button press logic here
                 if (widget.title.toLowerCase() == "logout") {
+                  Provider.of<DashboardController>(context, listen: false)
+                      .resetNotificationStatus();
                   logout();
                 }
                 Get.toNamed("/${widget.title.toLowerCase()}");

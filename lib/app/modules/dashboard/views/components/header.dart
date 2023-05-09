@@ -1,17 +1,28 @@
+import 'dart:js';
+
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:popover/popover.dart';
+import 'package:provider/provider.dart';
 import 'package:vendeco/shared/constants.dart';
-
+import 'package:badges/badges.dart' as badges;
+import '../../../../../auth.dart';
 import '../../../../../shared/responsive.dart';
+import '../../controllers/dashboard_controller.dart';
 
 class DashboardHeader extends StatelessWidget {
-  const DashboardHeader({
+  DashboardHeader({
     super.key,
   });
-
+  int notifcationCount = 0;
   @override
   Widget build(BuildContext context) {
+    bool notificationStatus =
+        context.watch<DashboardController>().isNotificationOpened;
+
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints constraints) {
       return Row(
@@ -42,32 +53,6 @@ class DashboardHeader extends StatelessWidget {
             ),
           Row(
             children: [
-              // Container(
-              //   height: Responsive.isMobile(context) ? 32 : 60,
-              //   width: Responsive.isMobile(context)
-              //       ? constraints.maxWidth * 0.400
-              //       : constraints.maxWidth * 0.310,
-              //   decoration: const BoxDecoration(
-              //     borderRadius: BorderRadius.all(
-              //       Radius.circular(25),
-              //     ),
-              //     color: secondaryColor,
-              //   ),
-              //   padding: EdgeInsets.symmetric(
-              //       horizontal: Responsive.isMobile(context) ? 5 : 20.0,
-              //       vertical: Responsive.isMobile(context) ? 0 : 14),
-              //   child: const TextField(
-              //     cursorColor: Colors.black12,
-              //     decoration: InputDecoration(
-              //       prefixIcon: Icon(Icons.search),
-              //       hintText: "Search . . .",
-              //       counterText: "",
-              //       border: InputBorder.none,
-              //       contentPadding: EdgeInsets.all(3),
-              //     ),
-              //     maxLength: 20,
-              //   ),
-              // ),
               Padding(
                 padding: const EdgeInsets.only(left: 19.0),
                 child: Container(
@@ -77,11 +62,68 @@ class DashboardHeader extends StatelessWidget {
                     borderRadius: BorderRadius.all(Radius.circular(10)),
                     color: secondaryColor,
                   ),
-                  child: Icon(
-                    Icons.notifications_none_outlined,
-                    size: Responsive.isMobile(context) ? 16 : 24,
-                    color: Colors.black,
-                  ),
+                  child: FutureBuilder<List<ContainerItem>>(
+                      future: _getContainerItems(),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return const Text('Error');
+                        } else if (snapshot.hasData) {
+                          notifcationCount = snapshot.data!.length;
+                          return badges.Badge(
+                            position:
+                                badges.BadgePosition.topEnd(top: -15, end: -12),
+                            badgeContent: Text(
+                              notifcationCount == 0 || notificationStatus
+                                  ? ''
+                                  : notifcationCount.toString(),
+                              style: GoogleFonts.akshar(
+                                fontSize: 20,
+                                fontWeight: fwLight,
+                                color: Colors.black,
+                              ),
+                            ),
+                            badgeStyle: badges.BadgeStyle(
+                              padding: const EdgeInsets.all(10.0),
+                              badgeColor:
+                                  notifcationCount == 0 || notificationStatus
+                                      ? Colors.transparent
+                                      : const Color(0xFFFEDE57),
+                            ),
+                            child: Center(
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.notifications_none_outlined,
+                                  size: Responsive.isMobile(context) ? 16 : 24,
+                                  color: Colors.black,
+                                ),
+                                onPressed: () {
+                                  Provider.of<DashboardController>(context,
+                                          listen: false)
+                                      .changeNotificationStatus();
+                                  showPopover(
+                                    context: context,
+                                    barrierColor: Colors.transparent,
+                                    transition: PopoverTransition.other,
+                                    bodyBuilder: (context) => ListItems(),
+                                    direction: PopoverDirection.bottom,
+                                    width: 600,
+                                    height: 400,
+                                    contentDyOffset: 15,
+                                    radius: 15,
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        } else {
+                          return Center(
+                              child: Icon(
+                            Icons.notifications_none_outlined,
+                            size: Responsive.isMobile(context) ? 16 : 24,
+                            color: Colors.black,
+                          ));
+                        }
+                      }),
                 ),
               )
             ],
@@ -90,4 +132,169 @@ class DashboardHeader extends StatelessWidget {
       );
     });
   }
+
+  Future<List<ContainerItem>> _getContainerItems() async {
+    final User? user = Auth().currentUser;
+    List<ContainerItem> containerList = [];
+    DatabaseReference usersRef = FirebaseDatabase.instance
+        .ref()
+        .child("UsersData")
+        .child(user!.uid)
+        .child("readings");
+
+    final DatabaseEvent event = await usersRef.limitToLast(1).once();
+    final DataSnapshot snapshot = event.snapshot;
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic> readings = snapshot.value as Map;
+      readings.forEach((key, value) {
+        String cont1 = value['container1Distance'].toString();
+        String cont2 = value['container2Distance'].toString();
+        String cont3 = value['container3Distance'].toString();
+        String cont4 = value['container4Distance'].toString();
+        if (int.tryParse(cont1)! >= 8) {
+          containerList.add(
+              ContainerItem("Shampoo", value['container1Distance'].toString()));
+        }
+        if (int.tryParse(cont2)! >= 8) {
+          containerList.add(ContainerItem(
+              "Hair Conditioner", value['container2Distance'].toString()));
+        }
+        if (int.tryParse(cont3)! >= 8) {
+          containerList.add(ContainerItem(
+              "Liquid Detergent", value['container3Distance'].toString()));
+        }
+        if (int.tryParse(cont4)! >= 8) {
+          containerList.add(ContainerItem(
+              "Fabric Conditioner", value['container4Distance'].toString()));
+        }
+      });
+    }
+
+    return containerList;
+  }
+}
+
+class ListItems extends StatelessWidget {
+  ListItems({Key? key}) : super(key: key);
+  List<ContainerItem> containerList = [];
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8),
+      child: FutureBuilder(
+          future: _getContainerItems(),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return const Center(child: Text('Error'));
+            } else if (snapshot.hasData) {
+              containerList = snapshot.data!;
+              if (containerList.isEmpty) {
+                return Center(
+                  child: Text(
+                    "No Notifications",
+                    style: GoogleFonts.akshar(
+                      fontSize: 24,
+                      fontWeight: fwRegular,
+                      color: Colors.black,
+                    ),
+                  ),
+                );
+              } else {
+                return ListView.separated(
+                  itemCount: containerList.length,
+                  padding: const EdgeInsets.all(8),
+                  itemBuilder: (BuildContext context, int index) {
+                    final container = containerList[index];
+
+                    return Container(
+                      height: 70,
+                      color: primaryColor,
+                      child: Center(
+                        child: Text(
+                          'Product ${container.name} is almost empty, please refill ',
+                          style: GoogleFonts.akshar(
+                            fontSize: 24,
+                            fontWeight: fwLight,
+                            color: secondaryColor,
+                          ),
+                        ),
+                      ),
+                    );
+                  },
+                  separatorBuilder: (BuildContext context, int index) {
+                    return const Divider(
+                      height: 10,
+                    );
+                  },
+                );
+              }
+            } else {
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
+    );
+  }
+
+  Container NotificationItem() {
+    return Container(
+      height: 70,
+      color: primaryColor,
+      child: Center(
+        child: Text(
+          'Product "ProductName" is almost empty, please refill ',
+          style: GoogleFonts.akshar(
+            fontSize: 24,
+            fontWeight: fwLight,
+            color: secondaryColor,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<List<ContainerItem>> _getContainerItems() async {
+    final User? user = Auth().currentUser;
+    List<ContainerItem> containerList = [];
+    DatabaseReference usersRef = FirebaseDatabase.instance
+        .ref()
+        .child("UsersData")
+        .child(user!.uid)
+        .child("readings");
+
+    final DatabaseEvent event = await usersRef.limitToLast(1).once();
+    final DataSnapshot snapshot = event.snapshot;
+    if (snapshot.value != null) {
+      Map<dynamic, dynamic> readings = snapshot.value as Map;
+      readings.forEach((key, value) {
+        String cont1 = value['container1Distance'].toString();
+        String cont2 = value['container2Distance'].toString();
+        String cont3 = value['container3Distance'].toString();
+        String cont4 = value['container4Distance'].toString();
+        if (int.tryParse(cont1)! >= 8) {
+          containerList.add(
+              ContainerItem("Shampoo", value['container1Distance'].toString()));
+        }
+        if (int.tryParse(cont2)! >= 8) {
+          containerList.add(ContainerItem(
+              "Hair Conditioner", value['container2Distance'].toString()));
+        }
+        if (int.tryParse(cont3)! >= 8) {
+          containerList.add(ContainerItem(
+              "Liquid Detergent", value['container3Distance'].toString()));
+        }
+        if (int.tryParse(cont4)! >= 8) {
+          containerList.add(ContainerItem(
+              "Fabric Conditioner", value['container4Distance'].toString()));
+        }
+      });
+    }
+
+    return containerList;
+  }
+}
+
+class ContainerItem {
+  String name;
+  String distance;
+  ContainerItem(this.name, this.distance);
 }

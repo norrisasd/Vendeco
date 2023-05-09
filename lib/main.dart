@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:provider/provider.dart';
+import 'package:vendeco/app/modules/dashboard/controllers/dashboard_controller.dart';
 import 'package:vendeco/app/modules/login/controllers/auth_controller.dart';
 import 'package:vendeco/app/modules/transactions/controllers/DropDown_controller.dart';
 import 'package:vendeco/app/modules/transactions/controllers/transactions_controller.dart';
@@ -51,6 +52,9 @@ Future<void> main() async {
         ),
         ChangeNotifierProvider(
           create: (context) => TransactionsController(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => DashboardController(),
         ),
       ],
       child: GetMaterialApp(

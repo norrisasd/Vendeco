@@ -50,10 +50,15 @@ class _TransactionTableState extends State<TransactionTable> {
                     .watch<DropDownController>()
                     .currentMonthForTransactions;
                 transactionList = snapshot.data!;
+
                 filteredTransactionList =
                     filterTransactionByMonth(currentMonth, transactionList);
-                context.watch<TransactionsController>().setTransactionList(
-                    filteredTransactionList); // set the transaction list
+                WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
+                  Provider.of<TransactionsController>(context, listen: false)
+                      .setTransactionList(filteredTransactionList);
+                });
+
+                //  // set the transaction list
                 return Container(
                   width: constraints.maxWidth,
                   decoration: BoxDecoration(

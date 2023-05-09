@@ -15,10 +15,20 @@ class AvailableItems extends StatelessWidget {
         children: [
           ItemBox(
             name: "Shampoo",
+            svgName: "shampoo",
           ),
-          ItemBox(name: "Hair Conditioner"),
-          ItemBox(name: "Liquid Detergent"),
-          ItemBox(name: "Fabric Conditioner"),
+          ItemBox(
+            name: "Hair Conditioner",
+            svgName: "hair_conditioner",
+          ),
+          ItemBox(
+            name: "Liquid Detergent",
+            svgName: "liquid_detergent",
+          ),
+          ItemBox(
+            name: "Fabric Conditioner",
+            svgName: "fabric_conditioner",
+          ),
         ]);
   }
 }

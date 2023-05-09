@@ -4,12 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:vendeco/shared/constants.dart';
-
+import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../../shared/responsive.dart';
 
 class ItemBox extends StatelessWidget {
   final String name;
-  const ItemBox({super.key, required this.name});
+  final String svgName;
+  const ItemBox({super.key, required this.name, required this.svgName});
 
   @override
   Widget build(BuildContext context) {
@@ -25,7 +26,7 @@ class ItemBox extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          const ItemHeader(),
+          ItemHeader(svgName: svgName),
           //ITEM NAME
           Center(
             child: Text(
@@ -63,22 +64,16 @@ class ItemDetails extends StatelessWidget {
             letterSpacing: Responsive.isMobile(context) ? 1.6 : 2.6,
           ),
         ),
-        Text(
-          "mL left",
-          style: GoogleFonts.akshar(
-            fontSize: Responsive.isMobile(context) ? 16 : 26,
-            color: Colors.black,
-            letterSpacing: Responsive.isMobile(context) ? 1.6 : 2.6,
-          ),
-        )
       ],
     );
   }
 }
 
 class ItemHeader extends StatelessWidget {
+  final String svgName;
   const ItemHeader({
     super.key,
+    required this.svgName,
   });
 
   @override
@@ -140,11 +135,12 @@ class ItemHeader extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Icon(
-          Icons.man_outlined,
-          size: Responsive.isMobile(context) ? 40 : 62,
+        SvgPicture.asset(
+          "assets/icons/$svgName.svg",
           color: Colors.black,
+          height: !Responsive.isMobile(context) ? 50 : 72,
         ),
+
         // IconButton(
         //   icon: Icon(
         //     Icons.edit_outlined,

@@ -1,7 +1,17 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class DashboardController extends GetxController {
-  final count = 0.obs;
+class DashboardController extends ChangeNotifier {
+  bool _isNotificationOpened = false;
+  bool get isNotificationOpened => _isNotificationOpened;
 
-  void increment() => count.value++;
+  void changeNotificationStatus() {
+    _isNotificationOpened = true;
+    notifyListeners();
+  }
+
+  void resetNotificationStatus() {
+    _isNotificationOpened = false;
+    notifyListeners();
+  }
 }
