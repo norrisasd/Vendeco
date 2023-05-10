@@ -1,10 +1,7 @@
-// ignore_for_file: prefer_const_constructors
+// ignore_for_file: prefer_const_constructors, non_constant_identifier_names
 
-import 'package:auto_size_text/auto_size_text.dart';
-import 'package:data_table_2/data_table_2.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_database/firebase_database.dart';
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
@@ -13,12 +10,14 @@ import 'package:vendeco/app/modules/sales_summary/models/sales.dart';
 import 'package:vendeco/shared/constants.dart';
 import '../../../../auth.dart';
 import '../../../../shared/responsive.dart';
+import '../../../../shared/widgets/mobile_header.dart';
 import '../../transactions/controllers/DropDown_controller.dart';
 import '../../transactions/models/months.dart';
 import '../../transactions/views/components/transactions.dart';
 import '../models/total_sales.dart';
-import 'components/dropdown_months.dart';
+import 'components/bar_chart.dart';
 import 'package:collection/collection.dart';
+import 'components/total_sales_table.dart';
 
 class SalesSummaryContent extends StatelessWidget {
   const SalesSummaryContent({super.key});
@@ -28,6 +27,7 @@ class SalesSummaryContent extends StatelessWidget {
     int currentYear = DateTime.now().year;
     double overAllTotal = 0;
     final Size size = MediaQuery.of(context).size;
+    double sizeW = MediaQuery.of(context).size.width;
     return Container(
       height: double.infinity,
       decoration: const BoxDecoration(color: secondaryColor),
@@ -40,24 +40,29 @@ class SalesSummaryContent extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
+            if (sizeW <= 1480)
+              const Padding(
+                padding: EdgeInsets.only(bottom: 22),
+                child: MobileHeader(color: primaryColor),
+              ),
             Text(
               currentYear.toString(),
               style: GoogleFonts.akshar(
                 height: 1,
-                fontSize: 150,
+                fontSize: Responsive.isMobile(context) ? 130 : 150,
                 fontWeight: fwSemiBold,
                 color: primaryColor,
-                letterSpacing: 15,
+                letterSpacing: Responsive.isMobile(context) ? 13 : 15,
               ),
             ),
             Text(
               "total sales",
               style: GoogleFonts.akshar(
                 height: 0.7,
-                fontSize: 70,
+                fontSize: Responsive.isMobile(context) ? 50 : 70,
                 fontWeight: fwSemiBold,
                 color: const Color(0xFFA9BAAE),
-                letterSpacing: 7,
+                letterSpacing: Responsive.isMobile(context) ? 5 : 7,
               ),
             ),
             SizedBox(height: size.height * 0.034),
@@ -99,268 +104,30 @@ class SalesSummaryContent extends StatelessWidget {
                     overAllTotal = finalSales.fold(
                         0.0, (sum, sale) => sum + (sale.total ?? 0));
 
-                    int counter = 0;
+                    // int counter = 0;
                     return Container(
-                        height: 580,
-                        width: double.infinity,
-                        decoration: BoxDecoration(color: Colors.transparent),
-                        child: Row(
-                          children: [
-                            Expanded(
-                              flex: 2,
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  border: Border.all(
-                                      width: 1, color: const Color(0xFFA8A1A1)),
-                                ),
-                                child: ScrollbarTheme(
-                                  data: ScrollbarThemeData(
-                                    thumbColor:
-                                        MaterialStateProperty.resolveWith<
-                                            Color>((Set<MaterialState> states) {
-                                      if (states
-                                          .contains(MaterialState.dragged)) {
-                                        return primaryColor; // The color when dragging the scrollbar thumb
-                                      }
-                                      return primaryColor; // The default color of the scrollbar thumb
-                                    }),
-                                  ),
-                                  child: DataTable2(
-                                    border: TableBorder.all(
-                                        width: 1,
-                                        color: const Color(0xFFA8A1A1)),
-                                    columns: [
-                                      DataColumn(
-                                        label: Center(
-                                          child: AutoSizeText(
-                                            "Month",
-                                            style: transactionTableText,
-                                          ),
-                                        ),
-                                      ),
-                                      DataColumn(
-                                        label: Center(
-                                            child: AutoSizeText(
-                                          "Shampoo",
-                                          style: transactionTableText,
-                                        )),
-                                      ),
-                                      DataColumn(
-                                        label: Center(
-                                            child: AutoSizeText(
-                                          "Hair Conditioner",
-                                          style: transactionTableText,
-                                        )),
-                                      ),
-                                      DataColumn(
-                                        label: Center(
-                                            child: AutoSizeText(
-                                          "Liquid Detergent",
-                                          style: transactionTableText,
-                                        )),
-                                      ),
-                                      DataColumn(
-                                        label: Center(
-                                            child: AutoSizeText(
-                                          "Fabric Conditioner",
-                                          style: transactionTableText,
-                                        )),
-                                      ),
-                                    ],
-                                    rows: List.generate(
-                                      totalSales.length,
-                                      (index) => availableTransactionItem(
-                                          totalSales[index]),
-                                    ),
-                                  ),
-                                ),
-                              ),
+                      height: Responsive.isDesktop(context) ? 580 : 1180,
+                      width: double.infinity,
+                      decoration: BoxDecoration(color: Colors.transparent),
+                      child: !Responsive.isDesktop(context)
+                          ? Column(
+                              children: SalesContentList(
+                                  context,
+                                  totalSales,
+                                  size,
+                                  currentMonthForSales,
+                                  overAllTotal,
+                                  finalSales))
+                          : Row(
+                              children: SalesContentList(
+                                  context,
+                                  totalSales,
+                                  size,
+                                  currentMonthForSales,
+                                  overAllTotal,
+                                  finalSales),
                             ),
-                            Expanded(
-                              child: Container(
-                                  decoration: const BoxDecoration(
-                                      color: Colors.transparent),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: [
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          Text(
-                                            "Sales For",
-                                            style: GoogleFonts.akshar(
-                                              fontSize: 26,
-                                              fontWeight: fwSemiBold,
-                                              color: primaryColor,
-                                              letterSpacing: 2.6,
-                                            ),
-                                          ),
-                                          SizedBox(width: size.width * 0.01),
-                                          Container(
-                                            height: 60,
-                                            width: size.width * 0.12,
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: const BoxDecoration(
-                                              color: Color(0xFFD0D0D0),
-                                              borderRadius: BorderRadius.all(
-                                                  Radius.circular(27)),
-                                            ),
-                                            child: Stack(
-                                              children: [
-                                                Center(
-                                                  child: Text(
-                                                    currentMonthForSales,
-                                                    style: GoogleFonts.akshar(
-                                                      height: 1,
-                                                      fontSize: 25,
-                                                      fontWeight: fwSemiBold,
-                                                      color: primaryColor,
-                                                    ),
-                                                  ),
-                                                ),
-                                                Align(
-                                                    alignment:
-                                                        Alignment.centerRight,
-                                                    child:
-                                                        DropDownMonthForSales()),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                      SizedBox(height: size.height * 0.02),
-                                      Expanded(
-                                        child: Padding(
-                                          padding:
-                                              const EdgeInsets.only(left: 20.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                              border: Border.all(
-                                                  width: 1,
-                                                  color: Colors.black),
-                                            ),
-                                            child: BarChart(
-                                              BarChartData(
-                                                  maxY: overAllTotal / 2,
-                                                  minY: 0,
-                                                  barTouchData: BarTouchData(
-                                                    touchTooltipData:
-                                                        BarTouchTooltipData(
-                                                      tooltipBgColor:
-                                                          primaryColor,
-                                                      getTooltipItem: (group,
-                                                          groupIndex,
-                                                          rod,
-                                                          rodIndex) {
-                                                        String tooltipText =
-                                                            '${rod.toY}';
-                                                        TextStyle textStyle =
-                                                            GoogleFonts.akshar(
-                                                          color: secondaryColor,
-                                                          fontWeight:
-                                                              fwSemiBold,
-                                                          fontSize: 16,
-                                                        );
-                                                        return BarTooltipItem(
-                                                          tooltipText,
-                                                          textStyle,
-                                                        );
-                                                      },
-                                                    ),
-                                                  ),
-                                                  borderData:
-                                                      FlBorderData(show: false),
-                                                  gridData:
-                                                      FlGridData(show: false),
-                                                  titlesData: FlTitlesData(
-                                                    show: true,
-                                                    topTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                    leftTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                    rightTitles: AxisTitles(
-                                                        sideTitles: SideTitles(
-                                                            showTitles: false)),
-                                                    bottomTitles: AxisTitles(
-                                                      sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTitlesWidget:
-                                                            (value, meta) {
-                                                          switch (
-                                                              value.toInt()) {
-                                                            case 0:
-                                                              return Text(
-                                                                'Shampoo',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              );
-                                                            case 1:
-                                                              return Text(
-                                                                'Hair Cond',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              );
-                                                            case 2:
-                                                              return Text(
-                                                                'Liq Deter',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              );
-                                                            case 3:
-                                                              return Text(
-                                                                'Fab Con',
-                                                                textAlign:
-                                                                    TextAlign
-                                                                        .center,
-                                                              );
-                                                            default:
-                                                              return Text('');
-                                                          }
-                                                        },
-                                                      ),
-                                                    ),
-                                                  ),
-                                                  barGroups: finalSales
-                                                      .map(
-                                                        (data) =>
-                                                            BarChartGroupData(
-                                                          x: counter++,
-                                                          barRods: [
-                                                            BarChartRodData(
-                                                              toY: data.total!,
-                                                              width: 70,
-                                                              borderRadius:
-                                                                  BorderRadius
-                                                                      .zero,
-                                                              color: const Color(
-                                                                  0xFF577055),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      )
-                                                      .toList()
-                                                  // [
-
-                                                  // ],
-                                                  ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  )),
-                            )
-                          ],
-                        ));
+                    );
                   } else {
                     return const Center(
                       child: CircularProgressIndicator(),
@@ -371,6 +138,35 @@ class SalesSummaryContent extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  List<Widget> SalesContentList(
+      BuildContext context,
+      List<TotalSales> totalSales,
+      Size size,
+      String currentMonthForSales,
+      double overAllTotal,
+      List<Sales> finalSales) {
+    return [
+      Flexible(
+        flex: !Responsive.isDesktop(context) ? 1 : 2,
+        child: TotalSalesTable(
+          totalSales: totalSales,
+        ),
+      ),
+      !Responsive.isDesktop(context)
+          ? SizedBox(height: size.height * 0.034)
+          : SizedBox(),
+      Flexible(
+        flex: 1,
+        child: TotalSalesChart(
+          size: size,
+          currentMonthForSales: currentMonthForSales,
+          overAllTotal: overAllTotal,
+          finalSales: finalSales,
+        ),
+      )
+    ];
   }
 
   List<TotalSales> getTotalSalesForAllMonths(
@@ -406,41 +202,6 @@ class SalesSummaryContent extends StatelessWidget {
     ).toList();
 
     return totalSales;
-  }
-
-  DataRow availableTransactionItem(TotalSales item) {
-    return DataRow(
-      cells: [
-        DataCell(
-          Center(
-            child: AutoSizeText(item.month!, style: tableText),
-          ),
-        ),
-        DataCell(
-          Center(
-            child: AutoSizeText(item.shampoo.toString(), style: tableText),
-          ),
-        ),
-        DataCell(
-          Center(
-            child:
-                AutoSizeText(item.hairConditioner.toString(), style: tableText),
-          ),
-        ),
-        DataCell(
-          Center(
-            child:
-                AutoSizeText(item.liquidDetergent.toString(), style: tableText),
-          ),
-        ),
-        DataCell(
-          Center(
-            child: AutoSizeText(item.fabricConditioner.toString(),
-                style: tableText),
-          ),
-        ),
-      ],
-    );
   }
 
   List<VendecoTransaction> filterTransactionByMonth(

@@ -1,4 +1,4 @@
-import 'dart:js';
+// ignore_for_file: non_constant_identifier_names, must_be_immutable
 
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -106,7 +106,9 @@ class DashboardHeader extends StatelessWidget {
                                     transition: PopoverTransition.other,
                                     bodyBuilder: (context) => ListItems(),
                                     direction: PopoverDirection.bottom,
-                                    width: 600,
+                                    width: !Responsive.isDesktop(context)
+                                        ? 200
+                                        : 600,
                                     height: 400,
                                     contentDyOffset: 15,
                                     radius: 15,
@@ -207,13 +209,14 @@ class ListItems extends StatelessWidget {
                     final container = containerList[index];
 
                     return Container(
+                      padding: const EdgeInsets.all(8),
                       height: 70,
                       color: primaryColor,
                       child: Center(
                         child: Text(
                           'Product ${container.name} is almost empty, please refill ',
                           style: GoogleFonts.akshar(
-                            fontSize: 24,
+                            fontSize: !Responsive.isDesktop(context) ? 16 : 24,
                             fontWeight: fwLight,
                             color: secondaryColor,
                           ),

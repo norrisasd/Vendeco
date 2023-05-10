@@ -28,12 +28,6 @@ class MobileHeader extends StatelessWidget {
               //   size: 32,
               //   color: color,
               // ),
-              SizedBox(width: 23),
-              Icon(
-                Icons.notifications_outlined,
-                size: 32,
-                color: color,
-              ),
             ],
           ),
         ],

@@ -18,6 +18,7 @@ class SalesSummaryView extends GetView<SalesSummaryController> {
   );
   @override
   Widget build(BuildContext context) {
+    double sizeW = MediaQuery.of(context).size.width;
     return Scaffold(
       resizeToAvoidBottomInset: false,
       drawer: const Navigation(),
@@ -34,7 +35,7 @@ class SalesSummaryView extends GetView<SalesSummaryController> {
                   //   const Expanded(
                   //     child: SalesSummaryContentMobile(),
                   //   ),
-                  if (Responsive.isDesktop(context))
+                  if (sizeW >= 1480)
                     const Expanded(
                       child: Navigation(),
                     ),
