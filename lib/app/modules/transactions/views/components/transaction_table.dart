@@ -154,9 +154,10 @@ class _TransactionTableState extends State<TransactionTable> {
 
   List<VendecoTransaction> filterTransactionByMonth(
       String month, List<VendecoTransaction> transactions) {
+    print(month);
     List<VendecoTransaction> filteredTransactions = transactions
-        .where(
-            (transaction) => getMonthName(transaction.date as String) == month)
+        .where((transaction) =>
+            getMonthName(transaction.date as String).compareTo(month) == 0)
         .map((transaction) {
       return VendecoTransaction(
         date: transaction.date,
@@ -170,8 +171,8 @@ class _TransactionTableState extends State<TransactionTable> {
   }
 
   String getMonthName(String date) {
-    String dateString = "2023-05-07";
-    DateTime dateTime = DateTime.parse(dateString);
+    DateFormat format = DateFormat('yyyy-MM-dd hh:mm:ssa');
+    DateTime dateTime = format.parse(date);
     String monthName = DateFormat('MMMM').format(dateTime);
     return monthName;
   }

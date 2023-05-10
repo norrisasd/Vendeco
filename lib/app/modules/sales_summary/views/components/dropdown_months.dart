@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 import '../../../../../shared/constants.dart';
 import '../../../../../shared/responsive.dart';
 import '../../../transactions/controllers/DropDown_controller.dart';
-import '../../../transactions/models/months.dart';
+import '../../../sales_summary/models/months.dart';
 
 class DropDownMonthForSales extends StatefulWidget {
   const DropDownMonthForSales({super.key});
@@ -16,6 +16,8 @@ class DropDownMonthForSales extends StatefulWidget {
 
 class _DropDownMonthForSales extends State<DropDownMonthForSales> {
   String dropdownValue = DateTime.now().month.toString();
+  List<String> monthsList = months;
+
   @override
   Widget build(BuildContext context) {
     return DropdownButton<String>(

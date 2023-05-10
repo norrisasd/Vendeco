@@ -95,12 +95,41 @@ class SalesSummaryContent extends StatelessWidget {
                         .map((entry) =>
                             Sales(title: entry.key, total: entry.value))
                         .toList();
+
                     if (totalPriceByProductName.isEmpty) {
                       finalSales = List.from(demoSales);
                     }
                     List<TotalSales> totalSales =
                         getTotalSalesForAllMonths(initTransaction);
-                    // List<TotalSales> totalSales =
+
+                    if (currentMonthForSales == currentYear.toString()) {
+                      double totalShampooSales = 0;
+                      double totalHairConditionerSales = 0;
+                      double totalFabricConditionerSales = 0;
+                      double totalLiquidDetergentSales = 0;
+                      for (int i = 0; i < totalSales.length; i++) {
+                        totalShampooSales += totalSales[i].shampoo!;
+                        totalHairConditionerSales +=
+                            totalSales[i].hairConditioner!;
+                        totalFabricConditionerSales +=
+                            totalSales[i].fabricConditioner!;
+                        totalLiquidDetergentSales +=
+                            totalSales[i].liquidDetergent!;
+                      }
+
+                      finalSales = [
+                        Sales(title: "Shampoo", total: totalShampooSales),
+                        Sales(
+                            title: "Hair Conditioner",
+                            total: totalHairConditionerSales),
+                        Sales(
+                            title: "Liquid Detergent",
+                            total: totalLiquidDetergentSales),
+                        Sales(
+                            title: "Fabric Conditioner",
+                            total: totalFabricConditionerSales),
+                      ];
+                    }
                     overAllTotal = finalSales.fold(
                         0.0, (sum, sale) => sum + (sale.total ?? 0));
 
@@ -172,9 +201,9 @@ class SalesSummaryContent extends StatelessWidget {
   List<TotalSales> getTotalSalesForAllMonths(
       List<VendecoTransaction> initTransactions) {
     List<TotalSales> totalSales = months.map(
-      (months) {
+      (month) {
         List<VendecoTransaction> transactions =
-            filterTransactionByMonth(months, initTransactions);
+            filterTransactionByMonth(month, initTransactions);
         var groupedTransactions =
             groupBy(transactions, (transaction) => transaction.product_name);
         var totalPriceByProductName = <String, double>{};
@@ -192,12 +221,24 @@ class SalesSummaryContent extends StatelessWidget {
         if (totalPriceByProductName.isEmpty) {
           finalSales = List.from(demoSales);
         }
+        if (finalSales.length == 1) {
+          finalSales.add(Sales(title: "Hair Conditioner", total: 0));
+          finalSales.add(Sales(title: "Liquid Detergent", total: 0));
+          finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+        } else if (finalSales.length == 2) {
+          finalSales.add(Sales(title: "Liquid Detergent", total: 0));
+          finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+        } else if (finalSales.length == 3) {
+          finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+        }
+
         return TotalSales(
-            month: months,
-            shampoo: finalSales[0].total,
-            hairConditioner: finalSales[1].total,
-            liquidDetergent: finalSales[2].total,
-            fabricConditioner: finalSales[3].total);
+          month: month,
+          shampoo: finalSales[0].total,
+          hairConditioner: finalSales[1].total,
+          liquidDetergent: finalSales[2].total,
+          fabricConditioner: finalSales[3].total,
+        );
       },
     ).toList();
 
@@ -222,8 +263,8 @@ class SalesSummaryContent extends StatelessWidget {
   }
 
   String getMonthName(String date) {
-    String dateString = "2023-05-07";
-    DateTime dateTime = DateTime.parse(dateString);
+    DateFormat format = DateFormat('yyyy-MM-dd hh:mm:ssa');
+    DateTime dateTime = format.parse(date);
     String monthName = DateFormat('MMMM').format(dateTime);
     return monthName;
   }
@@ -252,7 +293,6 @@ class SalesSummaryContent extends StatelessWidget {
         ));
       });
     }
-
     return transactions;
   }
 

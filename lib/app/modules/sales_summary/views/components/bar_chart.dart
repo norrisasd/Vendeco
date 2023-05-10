@@ -23,6 +23,16 @@ class TotalSalesChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    if (finalSales.length == 1) {
+      finalSales.add(Sales(title: "Hair Conditioner", total: 0));
+      finalSales.add(Sales(title: "Liquid Detergent", total: 0));
+      finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+    } else if (finalSales.length == 2) {
+      finalSales.add(Sales(title: "Liquid Detergent", total: 0));
+      finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+    } else if (finalSales.length == 3) {
+      finalSales.add(Sales(title: "Fabric Conditioner", total: 0));
+    }
     int counter = 0;
     return Container(
         decoration: const BoxDecoration(color: Colors.transparent),
@@ -84,7 +94,7 @@ class TotalSalesChart extends StatelessWidget {
                   ),
                   child: BarChart(
                     BarChartData(
-                        maxY: overAllTotal / 2,
+                        maxY: overAllTotal + 5,
                         minY: 0,
                         barTouchData: BarTouchData(
                           touchTooltipData: BarTouchTooltipData(

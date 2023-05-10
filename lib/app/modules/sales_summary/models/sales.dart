@@ -5,11 +5,14 @@ class Sales {
   final double? total;
 
   Sales({this.title, this.total});
+
+  @override
+  String toString() => 'Sales(title: $title, total: $total)';
 }
 
 List demoSales = [
   Sales(title: "Shampoo", total: 0.0),
   Sales(title: "Hair Conditioner", total: 0.0),
-  Sales(title: "Fabric Conditioner", total: 0.0),
   Sales(title: "Liquid Detergent", total: 0.0),
+  Sales(title: "Fabric Conditioner", total: 0.0),
 ];
