@@ -5,7 +5,7 @@
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
-    "description": "A new Flutter project.",
+    "description": "Log into your Vendeco account and start monitoring your sales.",
     "orientation": "portrait-primary",
     "prefer_related_applications": false,
     "icons": [

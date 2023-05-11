@@ -1,7 +1,7 @@
 name: vendeco
 version: 1.0.0+1
 publish_to: none
-description: A new Flutter project.
+description: Log into your Vendeco account and start monitoring your sales.
 environment:
   sdk: ">=2.19.4 <3.0.0"
 

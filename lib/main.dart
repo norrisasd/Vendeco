@@ -59,7 +59,7 @@ Future<void> main() async {
       ],
       child: GetMaterialApp(
         debugShowCheckedModeBanner: false,
-        title: "Application",
+        title: "Vendeco",
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
       ),
